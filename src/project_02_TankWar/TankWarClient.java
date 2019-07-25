@@ -23,6 +23,7 @@ public class TankWarClient extends Frame {
 	List<Explode> explodes = new ArrayList<Explode>();
 	List<Tank> enemyTanks = new ArrayList<Tank>();
 		
+	NetClient netClient = new NetClient();
 	
 	public static void main(String[] args) {
 		TankWarClient t = new TankWarClient();
@@ -51,6 +52,8 @@ public class TankWarClient extends Frame {
 		this.setVisible(true);
 		
 		new Thread(new PaintThread()).start();
+		
+		netClient.connected("192.168.88.8",TankServer.TCP_PORT);
 		
 	}
 		

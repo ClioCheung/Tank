@@ -15,7 +15,6 @@ public class Tank {
 	public static final int HEIGHT = 30;
 	
 	private boolean L=false,U=false,R=false,D=false;
-	enum Direction {L,LU,U,RU,R,RD,D,LD,STOP};
 	
 	private Direction dir = Direction.STOP;
 	private Direction ptDir = Direction.D;
