@@ -1,5 +1,6 @@
 package project_02_TankWar;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -8,9 +9,11 @@ import java.net.UnknownHostException;
 public class NetClient {
 	private static int UDP_PORT_START = 2223;
 	private int udpPort;
+	private TankWarClient tc;
 	
-	public NetClient() {
+	public NetClient(TankWarClient tc) {
 		this.udpPort = UDP_PORT_START ++;
+		this.tc = tc;
 	}
 
 	
@@ -18,10 +21,13 @@ public class NetClient {
 		Socket socket = null;
 		try {
 			socket = new Socket(IP,port);
-System.out.println("connected to server!");
-
 			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-			dos.writeInt(port);
+			dos.writeInt(udpPort);
+
+			DataInputStream dis = new DataInputStream(socket.getInputStream());
+			int id = dis.readInt();
+			tc.tank.id = id;
+System.out.println("connected to server! and Server give me a ID: " + id);
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

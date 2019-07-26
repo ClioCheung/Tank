@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import java.util.Random;
 
 public class Tank {	
-
+	int id;
 	public static final int XSPEED = 5;
 	public static final int YSPEED = 5;
 	
@@ -58,11 +58,12 @@ public class Tank {
 		Color c = g.getColor();	
 		if(good) {
 			g.setColor(Color.MAGENTA);
+			g.drawString("ID : " + id, x, y-10);
 		}
 		else {
 			g.setColor(Color.gray);
 		}
-		g.fillOval(x, y, WIDTH, HEIGHT);	
+		g.fillOval(x, y, WIDTH, HEIGHT);
 		g.setColor(c);
 		
 		move();
