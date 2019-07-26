@@ -33,12 +33,21 @@ System.out.println("A Client connected! Addr- " + socket.getInetAddress() + ":" 
 				
 				Client c = new Client(IP,udpPort);
 				clients.add(c);
-				socket.close();
 			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		} finally {
+			if (socket != null) {
+				try {
+					socket.close();
+					socket = null;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}
 		
 	}
 	
