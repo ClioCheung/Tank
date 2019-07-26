@@ -12,7 +12,7 @@ public class NetClient {
 	public NetClient() {
 		this.udpPort = UDP_PORT_START ++;
 	}
-	
+
 	
 	public void connected(String IP,int port) {
 		Socket socket = null;
