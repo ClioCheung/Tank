@@ -47,11 +47,9 @@ public class TankServer {
 
 				Client c = new Client(IP, udpPort);
 				clients.add(c);
-<<<<<<< HEAD
+
 System.out.println("A Client connected! Addr- " + socket.getInetAddress() + ":" + socket.getPort()
 						+ " udpPort ----" + udpPort);
-=======
->>>>>>> branch 'master' of https://github.com/ClioChang/Tank.git
 			}
 
 		} catch (IOException e) {
@@ -65,15 +63,8 @@ System.out.println("A Client connected! Addr- " + socket.getInetAddress() + ":" 
 					e.printStackTrace();
 				}
 			}
-<<<<<<< HEAD
 
 		}
-
-=======
-			
-		}
-		
->>>>>>> branch 'master' of https://github.com/ClioChang/Tank.git
 	}
 
 	private class Client {
