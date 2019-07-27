@@ -3,17 +3,28 @@ package project_02_TankWar;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class NetClient {
 	private static int UDP_PORT_START = 2223;
 	private int udpPort;
-	private TankWarClient tc;
+	private TankClient tc;
+	DatagramSocket ds = null;
 	
-	public NetClient(TankWarClient tc) {
+	
+	public NetClient(TankClient tc) {
 		this.udpPort = UDP_PORT_START ++;
 		this.tc = tc;
+		
+		try {
+			ds = new DatagramSocket(udpPort);
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	
@@ -44,7 +55,15 @@ System.out.println("connected to server! and Server give me a ID: " + id);
 				
 			}
 		}
-	
+		
+		TankClientMsg msg = new TankClientMsg(tc.tank);
+		send(msg);		
 	}
 
+
+	private void send(TankClientMsg msg) {
+		msg.send(ds,"192.168.88.8",udpPort);
+	}
+	
+	
 }

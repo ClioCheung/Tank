@@ -6,7 +6,7 @@ import java.awt.Graphics;
 public class Explode {
 	int x;
 	int y;
-	private TankWarClient tc;
+	private TankClient tc;
 	
 	private boolean live = true;
 	
@@ -14,7 +14,7 @@ public class Explode {
 	int step = 0;
 	
 	
-	public Explode(int x, int y, TankWarClient tc) {
+	public Explode(int x, int y, TankClient tc) {
 		this.x = x;
 		this.y = y;
 		this.tc = tc;

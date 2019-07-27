@@ -18,7 +18,7 @@ public class Missile {
 	boolean L=false,U=false,R=false,D=false;
 	Direction dir;
 	
-	TankWarClient tc;
+	TankClient tc;
 	private boolean live = true;
 	private boolean good;
 
@@ -35,7 +35,7 @@ public class Missile {
 	}
 	
 	
-	public Missile(int x, int y,boolean good,Direction dir,TankWarClient tc) {
+	public Missile(int x, int y,boolean good,Direction dir,TankClient tc) {
 		this(x,y,dir);
 		this.good = good;
 		this.tc = tc;
@@ -95,7 +95,7 @@ public class Missile {
 			break;
 		}
 		
-		if(x < 0 || y < 0 || x > TankWarClient.GAME_WIDTH || y > TankWarClient.GAME_HEIGHT) {
+		if(x < 0 || y < 0 || x > TankClient.GAME_WIDTH || y > TankClient.GAME_HEIGHT) {
 			live = false;
 		}
 		
