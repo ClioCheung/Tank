@@ -26,7 +26,7 @@ public class NetClient {
 		}
 		
 	}
-
+	
 	
 	public void connected(String IP,int port) {
 		Socket socket = null;
