@@ -32,9 +32,9 @@ public class TankClient extends Frame {
 	}
 
 	private void launch() {
-		for (int i = 0; i < 10; i++) {
+	/*	for (int i = 0; i < 10; i++) {
 			enemyTanks.add(new Tank(50 + 40 * (i + 9), 60, false, this));
-		}
+		}*/
 
 		this.setTitle("TankWar");
 		this.setSize(GAME_WIDTH, GAME_HEIGHT);

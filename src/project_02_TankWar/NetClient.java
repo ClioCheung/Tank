@@ -62,7 +62,7 @@ System.out.println("connected to server! and Server give me a ID: " + id);
 
 
 	private void send(TankClientMsg msg) {
-		msg.send(ds,"192.168.88.8",udpPort);
+		msg.send(ds,"192.168.88.8",TankServer.UDP_PORT);
 	}
 	
 	
