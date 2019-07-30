@@ -1,7 +1,9 @@
 package project_02_TankWar;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -39,6 +41,23 @@ public class TankClientMsg {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void parse(DataInputStream dis) {
+		try {
+			int id = dis.readInt();
+			int x = dis.readInt();
+			int y = dis.readInt();
+			Direction dir = Direction.values()[dis.readInt()];
+			boolean good = dis.readBoolean();
+System.out.println("id:" + id + " x:" + x + " y:" + y + " dir:" + dir +" good:" + good); 
+		} catch (EOFException e) {
+//			System.out.println("msg EOFException");
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+			
 	}
 
 }

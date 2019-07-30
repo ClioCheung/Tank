@@ -1,8 +1,10 @@
 package project_02_TankWar;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -57,7 +59,9 @@ System.out.println("connected to server! and Server give me a ID: " + id);
 		}
 		
 		TankClientMsg msg = new TankClientMsg(tc.tank);
-		send(msg);		
+		send(msg);	
+		new Thread(new UDPReceiveThread()).start();
+		
 	}
 
 
@@ -66,4 +70,44 @@ System.out.println("connected to server! and Server give me a ID: " + id);
 	}
 	
 	
+	private class UDPReceiveThread implements Runnable {
+		byte[] buf = new byte[1024];
+
+		@Override
+		public void run() {
+			while(ds != null) {
+				DatagramPacket dp = new DatagramPacket(buf,0,buf.length);
+				try {
+					ds.receive(dp);
+System.out.println("A packet receive form server!");
+					parse(dp);
+				} catch (IOException e) {
+				
+					e.printStackTrace();
+				}
+			}
+		}
+
+		private void parse(DatagramPacket dp) {
+			ByteArrayInputStream bais = new ByteArrayInputStream(buf,0,dp.getLength());
+			DataInputStream dis = new DataInputStream(bais);
+			
+			TankClientMsg msg = new TankClientMsg(tc.tank);
+			msg.parse(dis);
+		}
+		
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+

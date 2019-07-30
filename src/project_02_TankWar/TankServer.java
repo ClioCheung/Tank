@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -99,7 +100,13 @@ System.out.println("A thread started up at port: " + UDP_PORT);
 				try {
 					ds.receive(dp);
 System.out.println("A packet received!");
+				for(int i = 0;i < clients.size();i++) {
+					Client c = clients.get(i);
+					dp.setSocketAddress(new InetSocketAddress(c.IP,c.udpPort));
+					ds.send(dp);
+				}
 
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
