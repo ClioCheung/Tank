@@ -11,7 +11,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class NetClient {
-	private static int UDP_PORT_START = 2223;
+	private static int UDP_PORT_START = 2224;
 	private int udpPort;
 	private TankClient tc;
 	DatagramSocket ds = null;
@@ -58,14 +58,14 @@ System.out.println("connected to server! and Server give me a ID: " + id);
 			}
 		}
 		
-		TankClientMsg msg = new TankClientMsg(tc.tank);
+		TankNewMsg msg = new TankNewMsg(tc.tank);
 		send(msg);	
-		new Thread(new UDPReceiveThread()).start();
 		
+		new Thread(new UDPReceiveThread()).start();
 	}
 
 
-	private void send(TankClientMsg msg) {
+	public void send(Msg msg) {
 		msg.send(ds,"192.168.88.8",TankServer.UDP_PORT);
 	}
 	
@@ -79,10 +79,9 @@ System.out.println("connected to server! and Server give me a ID: " + id);
 				DatagramPacket dp = new DatagramPacket(buf,0,buf.length);
 				try {
 					ds.receive(dp);
-System.out.println("A packet receive form server!");
+System.out.println("A packet received form server!");
 					parse(dp);
 				} catch (IOException e) {
-				
 					e.printStackTrace();
 				}
 			}
@@ -91,9 +90,27 @@ System.out.println("A packet receive form server!");
 		private void parse(DatagramPacket dp) {
 			ByteArrayInputStream bais = new ByteArrayInputStream(buf,0,dp.getLength());
 			DataInputStream dis = new DataInputStream(bais);
+			int msgType = 0;
+			try {
+				msgType = dis.readInt();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			
-			TankClientMsg msg = new TankClientMsg(tc.tank);
-			msg.parse(dis);
+			Msg msg = null; 
+			switch(msgType){
+			case Msg.TANK_NEW_MSG:
+				msg = new TankNewMsg(NetClient.this.tc);
+				msg.parse(dis);
+				break;
+			case Msg.TANK_MOVE_MSG:
+				msg = new TankMoveMsg(NetClient.this.tc);
+				msg.parse(dis);
+				break;
+			}
+//			TankClientMsg msg = new TankClientMsg(tc);
+//			在一个内部访问封装类的成员变量：封装类名.this.成员变量名——NetClient.this.tc
+//			TankNewMsg msg = new TankNewMsg(NetClient.this.tc);
 		}
 		
 	}

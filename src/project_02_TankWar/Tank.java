@@ -69,11 +69,16 @@ public class Tank {
 		this(x, y, good);
 		this.tc = tc;
 	}
+	
+	public Tank(int x, int y, boolean good, Direction dir,TankClient tc) {
+		this(x, y, good,tc);
+		this.dir = dir;
+	}
 
 	public void draw(Graphics g) {
 		if (!live) {
 			if (!good) {
-				tc.enemyTanks.remove(this);
+				tc.tanks.remove(this);
 			}
 			return;
 		}
@@ -205,8 +210,8 @@ public class Tank {
 			D = true;
 			break;
 		}
+		
 		locateDirection();
-
 	}
 
 	private Missile fire() {
@@ -243,10 +248,11 @@ public class Tank {
 		}
 
 		locateDirection();
-
 	}
 
 	private void locateDirection() {
+		Direction oldDir = this.dir;
+		
 		if (L & !U & !R & !D) {
 			dir = Direction.L;
 		} else if (L & U & !R & !D) {
@@ -266,6 +272,11 @@ public class Tank {
 		} else if (!L & !U & !R & !D) {
 			dir = Direction.STOP;
 		}
+		
+		if(dir != oldDir) {
+			TankMoveMsg msg = new TankMoveMsg(id,dir);
+			tc.netClient.send(msg);
+		}		
 	}
 
 	public Rectangle getRectangle() {

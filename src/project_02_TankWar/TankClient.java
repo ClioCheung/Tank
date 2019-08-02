@@ -8,7 +8,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class TankClient extends Frame {
 
 	List<Missile> missiles = new ArrayList<Missile>();
 	List<Explode> explodes = new ArrayList<Explode>();
-	List<Tank> enemyTanks = new ArrayList<Tank>();
+	List<Tank> tanks = new ArrayList<Tank>();
 
 	NetClient netClient = new NetClient(this);
 
@@ -61,12 +60,12 @@ public class TankClient extends Frame {
 	public void paint(Graphics g) {
 		g.drawString("Missiles's count: " + missiles.size(), 10, 50);
 		g.drawString("explodes's count: " + explodes.size(), 10, 70);
-		g.drawString("EnemyTanks's count: " + enemyTanks.size(), 10, 90);
+		g.drawString("EnemyTanks's count: " + tanks.size(), 10, 90);
 
 		for (int i = 0; i < missiles.size(); i++) {
 			Missile m = missiles.get(i);
 //			打敌人
-			m.hitTanks(enemyTanks);
+			m.hitTanks(tanks);
 //			敌人打我
 			m.hitTank(tank);
 			m.draw(g);
@@ -77,8 +76,8 @@ public class TankClient extends Frame {
 			explode.draw(g);
 		}
 
-		for (int i = 0; i < enemyTanks.size(); i++) {
-			Tank t = enemyTanks.get(i);
+		for (int i = 0; i < tanks.size(); i++) {
+			Tank t = tanks.get(i);
 			t.draw(g);
 		}
 

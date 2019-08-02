@@ -35,39 +35,39 @@ public class TankServer {
 			e1.printStackTrace();
 		}
 
-			while (true) {
-				Socket socket = null;
-				try {
-					socket = serverSocket.accept();
-	
-					DataInputStream dis = new DataInputStream(socket.getInputStream());
-					String IP = socket.getInetAddress().getHostAddress();
-					int udpPort = dis.readInt();
-	
-					DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-					dos.writeInt(ID++);
-	
-					Client c = new Client(IP, udpPort);
-					clients.add(c);
+		while (true) {
+			Socket socket = null;
+			try {
+				socket = serverSocket.accept();
+
+				DataInputStream dis = new DataInputStream(socket.getInputStream());
+				String IP = socket.getInetAddress().getHostAddress();
+				int udpPort = dis.readInt();
+
+				DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+				dos.writeInt(ID++);
+
+				Client c = new Client(IP, udpPort);
+				clients.add(c);
 	
 System.out.println("A Client connected! Addr- " + socket.getInetAddress() + ":" + socket.getPort()
 							+ "  ----udpPort:" + udpPort);
-		
-		
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
-					if (socket != null) {
-						try {
-							socket.close();
-							socket = null;
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (socket != null) {
+					try {
+						socket.close();
+						socket = null;
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-		
 				}
+	
 			}
+		}
 	}
 
 	private class Client {

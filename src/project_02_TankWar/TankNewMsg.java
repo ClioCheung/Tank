@@ -10,11 +10,17 @@ import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 
-public class TankClientMsg {
+public class TankNewMsg implements Msg {
 	Tank tank;
-
-	public TankClientMsg(Tank tank) {
+	TankClient tc;
+	int MsgType = Msg.TANK_NEW_MSG;
+	
+	public TankNewMsg(Tank tank) {
 		this.tank = tank;
+	}
+	
+	public TankNewMsg(TankClient tc) {
+		this.tc = tc;
 	}
 
 	public void send(DatagramSocket ds, String IP, int udpPort) {
@@ -22,6 +28,7 @@ public class TankClientMsg {
 		DataOutputStream dos = new DataOutputStream(baos);
 
 		try {
+			dos.writeInt(MsgType);
 			dos.writeInt(tank.id);
 			dos.writeInt(tank.getX());
 			dos.writeInt(tank.getY());
@@ -35,6 +42,8 @@ public class TankClientMsg {
 		try {
 			DatagramPacket dp = new DatagramPacket(buf, buf.length, new InetSocketAddress(IP, udpPort));
 			ds.send(dp);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
 		} catch (SocketException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -46,11 +55,20 @@ public class TankClientMsg {
 	public void parse(DataInputStream dis) {
 		try {
 			int id = dis.readInt();
+			if (tc.tank.id == id) {
+				return;
+			}
+			
 			int x = dis.readInt();
 			int y = dis.readInt();
 			Direction dir = Direction.values()[dis.readInt()];
 			boolean good = dis.readBoolean();
-System.out.println("id:" + id + " x:" + x + " y:" + y + " dir:" + dir +" good:" + good); 
+			
+			Tank t = new Tank(x, y, good, dir,this.tc);
+			t.id = id;
+			tc.tanks.add(t);
+			
+//System.out.println("id:" + id + " x:" + x + " y:" + y + " dir:" + dir +" good:" + good); 
 		} catch (EOFException e) {
 //			System.out.println("msg EOFException");
 			e.printStackTrace();
