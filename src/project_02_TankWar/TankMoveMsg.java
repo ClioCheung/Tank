@@ -28,7 +28,7 @@ public class TankMoveMsg implements Msg {
 	
 	
 	@Override
-	public void send(DatagramSocket ds, String IP, int udpPort) {
+	public void send(DatagramSocket ds, String IP, int serverUdpPort) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream dos = new DataOutputStream(baos);
 		try {
@@ -40,7 +40,7 @@ public class TankMoveMsg implements Msg {
 		}
 				
 		byte[] buf = baos.toByteArray();			
-		DatagramPacket dp = new DatagramPacket(buf,buf.length,new InetSocketAddress(IP,udpPort));
+		DatagramPacket dp = new DatagramPacket(buf,buf.length,new InetSocketAddress(IP,serverUdpPort));
 		try {
 			ds.send(dp);
 		} catch (IllegalArgumentException e) {
@@ -61,6 +61,7 @@ public class TankMoveMsg implements Msg {
 				return;
 			}
 			Direction dir = Direction.values()[dis.readInt()];
+			
 			boolean exist = false;
 			for(int i = 0;i < tc.tanks.size();i++) {
 				Tank t = tc.tanks.get(i);

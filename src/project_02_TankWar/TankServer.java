@@ -23,7 +23,6 @@ public class TankServer {
 		new TankServer().start();
 	}
 
-
 	public void start() {
 		new Thread(new UDPThread()).start();
 
@@ -52,8 +51,6 @@ public class TankServer {
 	
 System.out.println("A Client connected! Addr- " + socket.getInetAddress() + ":" + socket.getPort()
 							+ "  ----udpPort:" + udpPort);
-
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -100,12 +97,11 @@ System.out.println("A thread started up at port: " + UDP_PORT);
 				try {
 					ds.receive(dp);
 System.out.println("A packet received!");
-				for(int i = 0;i < clients.size();i++) {
-					Client c = clients.get(i);
-					dp.setSocketAddress(new InetSocketAddress(c.IP,c.udpPort));
-					ds.send(dp);
-				}
-
+					for(int i = 0;i < clients.size();i++) {
+						Client c = clients.get(i);
+						dp.setSocketAddress(new InetSocketAddress(c.IP,c.udpPort));
+						ds.send(dp);
+					}
 					
 				} catch (IOException e) {
 					e.printStackTrace();

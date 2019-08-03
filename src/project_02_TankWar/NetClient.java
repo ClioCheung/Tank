@@ -11,29 +11,33 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class NetClient {
-	private static int UDP_PORT_START = 2224;
 	private int udpPort;
 	private TankClient tc;
 	DatagramSocket ds = null;
 	
-	
+	public int getUdpPort() {
+		return udpPort;
+	}
+
+	public void setUdpPort(int udpPort) {
+		this.udpPort = udpPort;
+	}
+
 	public NetClient(TankClient tc) {
-		this.udpPort = UDP_PORT_START ++;
 		this.tc = tc;
+	}
+	
+	public void connected(String IP,int tcpPort) {
+		Socket socket = null;
 		
 		try {
 			ds = new DatagramSocket(udpPort);
 		} catch (SocketException e) {
 			e.printStackTrace();
-		}
-		
-	}
-	
-	
-	public void connected(String IP,int port) {
-		Socket socket = null;
+		} 
+				
 		try {
-			socket = new Socket(IP,port);
+			socket = new Socket(IP,tcpPort);
 			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 			dos.writeInt(udpPort);
 

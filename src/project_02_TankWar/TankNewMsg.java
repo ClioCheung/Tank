@@ -57,16 +57,31 @@ public class TankNewMsg implements Msg {
 			int id = dis.readInt();
 			if (tc.tank.id == id) {
 				return;
-			}
+			}			
 			
 			int x = dis.readInt();
 			int y = dis.readInt();
 			Direction dir = Direction.values()[dis.readInt()];
 			boolean good = dis.readBoolean();
 			
-			Tank t = new Tank(x, y, good, dir,this.tc);
-			t.id = id;
-			tc.tanks.add(t);
+			boolean exist = false;
+			for(int i = 0; i < tc.tanks.size(); i++) {
+				Tank t = tc.tanks.get(i);
+				if(t.id == id) {
+					exist = true;
+					break;
+				}
+			}
+						
+			if(!exist) {
+//				把原有的Tank消息发送给新加进来的Tank。
+				TankNewMsg tnMsg = new TankNewMsg(tc.tank);
+				tc.netClient.send(tnMsg);
+				
+				Tank t = new Tank(x, y, good, dir,this.tc);
+				t.id = id;
+				tc.tanks.add(t);
+			}
 			
 //System.out.println("id:" + id + " x:" + x + " y:" + y + " dir:" + dir +" good:" + good); 
 		} catch (EOFException e) {

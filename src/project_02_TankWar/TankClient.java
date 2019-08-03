@@ -1,9 +1,16 @@
 package project_02_TankWar;
 
+import java.awt.Button;
 import java.awt.Color;
+import java.awt.Dialog;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Label;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -11,10 +18,12 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @SuppressWarnings("serial")
 public class TankClient extends Frame {
 	public static final int GAME_WIDTH = 800;
 	public static final int GAME_HEIGHT = 600;
+	public static final Frame TankClient = null;
 	Image offSreenImage = null;
 
 	Tank tank = new Tank(50, 50, true, this);
@@ -24,6 +33,7 @@ public class TankClient extends Frame {
 	List<Tank> tanks = new ArrayList<Tank>();
 
 	NetClient netClient = new NetClient(this);
+	ConnDialog dialog = new ConnDialog();
 
 	public static void main(String[] args) {
 		TankClient t = new TankClient();
@@ -52,7 +62,7 @@ public class TankClient extends Frame {
 
 		new Thread(new PaintThread()).start();
 
-		netClient.connected("192.168.88.8", TankServer.TCP_PORT);
+//		netClient.connected("192.168.88.8", TankServer.TCP_PORT);
 
 	}
 
@@ -129,9 +139,63 @@ public class TankClient extends Frame {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			tank.keyReleased(e);
+			int key = e.getKeyCode();
+			
+			if(key == KeyEvent.VK_C) {
+				dialog.setVisible(true);
+			} else {
+				tank.keyReleased(e);
+			}
+			
 		}
 
 	}
-
+	
+	
+	class ConnDialog extends Dialog {
+		TextField tfIP = new TextField("192.168.88.8",12);
+		TextField tfPort = new TextField("" + TankServer.TCP_PORT,4);
+		TextField myUdpPort = new TextField("2223",4);
+		Button bConfirm = new Button("Confirm"); 
+		
+		public ConnDialog() {
+			super(TankClient.this, true);
+			this.setLayout(new FlowLayout());
+			this.add(new Label("IP: "));
+			this.add(tfIP);
+			this.add(new Label("Port: "));
+			this.add(tfPort);
+			this.add(new Label("MyUdpPort: "));
+			this.add(myUdpPort);
+			this.add(bConfirm);
+					
+			this.setLocation(300, 300);
+			this.pack();
+			
+			this.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					setVisible(false);
+				}
+				
+			});
+			
+			bConfirm.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String IP = tfIP.getText().trim();
+					int serverTcpPort = Integer.parseInt(tfPort.getText().trim());
+					int udpPort = Integer.parseInt(myUdpPort.getText().trim());
+					
+					netClient.setUdpPort(udpPort);
+					netClient.connected(IP, serverTcpPort);
+					setVisible(false);
+				}
+				
+			});
+	
+		}
+	
+	}
+	
 }
