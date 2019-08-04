@@ -73,7 +73,6 @@ System.out.println("connected to server! and Server give me a ID: " + id);
 		msg.send(ds,"192.168.88.8",TankServer.UDP_PORT);
 	}
 	
-	
 	private class UDPReceiveThread implements Runnable {
 		byte[] buf = new byte[1024];
 
@@ -109,6 +108,10 @@ System.out.println("A packet received form server!");
 				break;
 			case Msg.TANK_MOVE_MSG:
 				msg = new TankMoveMsg(NetClient.this.tc);
+				msg.parse(dis);
+				break;
+			case Msg.MISSILE_NEW_MSG:
+				msg = new MissileNewMsg(NetClient.this.tc);
 				msg.parse(dis);
 				break;
 			}

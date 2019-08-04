@@ -21,6 +21,39 @@ public class Missile {
 	TankClient tc;
 	private boolean live = true;
 	private boolean good;
+	private int tankId;
+
+	public int getTankId() {
+		return tankId;
+	}
+
+	public void setTankId(int tankId) {
+		this.tankId = tankId;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public boolean isGood() {
+		return good;
+	}
+
+	public void setGood(boolean good) {
+		this.good = good;
+	}
 
 
 	public boolean isLive() {
@@ -28,15 +61,15 @@ public class Missile {
 	}
 
 
-	public Missile(int x, int y,Direction dir) {
+	public Missile(int tankId,int x, int y,Direction dir) {
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
 	}
 	
 	
-	public Missile(int x, int y,boolean good,Direction dir,TankClient tc) {
-		this(x,y,dir);
+	public Missile(int tankId,int x, int y,boolean good,Direction dir,TankClient tc) {
+		this(tankId,x,y,dir);
 		this.good = good;
 		this.tc = tc;
 	}
