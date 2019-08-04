@@ -8,66 +8,57 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 
-public class MissileNewMsg implements Msg {
-	int MsgType = Msg.MISSILE_NEW_MSG;
-	private Missile m;
+public class MissileDeathMsg implements Msg {
+	int msgType = Msg.MISSILE_DEATH_MSG;
 	TankClient tc;
+	int tankId;
+	int id;
 	
-	public MissileNewMsg(Missile m) {
-		this.m = m;
+	public MissileDeathMsg(int tankId,int id) {
+		this.tankId = tankId;
+		this.id = id;
 	}
-	public MissileNewMsg(TankClient tc) {
+	
+	public MissileDeathMsg(TankClient tc) {
 		this.tc = tc;
 	}
-		
+	
 	@Override
 	public void send(DatagramSocket ds, String IP, int udpPort) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream dos = new DataOutputStream(baos);
 		try {
-			dos.writeInt(MsgType);
-			dos.writeInt(m.getTankId());
-			dos.writeInt(m.getId());
-			dos.writeInt(m.getX());
-			dos.writeInt(m.getY());
-			dos.writeInt(m.dir.ordinal());
-			dos.writeBoolean(m.isGood());
+			dos.writeInt(msgType);
+			dos.writeInt(tankId);
+			dos.writeInt(id);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		byte[] buf = baos.toByteArray();
-		DatagramPacket dp = new DatagramPacket(buf, buf.length, new InetSocketAddress(IP,udpPort));
+		DatagramPacket dp = new DatagramPacket(buf,buf.length,new InetSocketAddress(IP,udpPort));
 		try {
 			ds.send(dp);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
 	public void parse(DataInputStream dis) {
 		try {
 			int tankId = dis.readInt();
-			if(tankId == tc.tank.id) {
-				return;
-			}
 			int id = dis.readInt();
-			int x = dis.readInt();
-			int y = dis.readInt();
-			Direction dir = Direction.values()[dis.readInt()];
-			boolean good = dis.readBoolean();
 			
-			Missile m = new Missile(tankId,x,y,good,dir,this.tc);
-			m.setId(id);
-			tc.missiles.add(m);
-			
+			for(int i = 0;i < tc.missiles.size(); i++) {
+				Missile m = tc.missiles.get(i);
+				if(tankId == m.getTankId() && id == m.getId()) {
+					m.setLive(false);
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 
 }

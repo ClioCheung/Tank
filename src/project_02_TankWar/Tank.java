@@ -81,18 +81,18 @@ public class Tank {
 
 	public void draw(Graphics g) {
 		if (!live) {
-			if (!good) {
+//			if (!good) {
 				tc.tanks.remove(this);
-			}
+//			}
 			return;
 		}
 		Color c = g.getColor();
 		if (good) {
 			g.setColor(Color.MAGENTA);
-			g.drawString("ID : " + id, x, y - 10);
 		} else {
-			g.setColor(Color.gray);
+			g.setColor(Color.BLUE);
 		}
+		g.drawString("ID : " + id, x, y - 10);
 		g.fillOval(x, y, WIDTH, HEIGHT);
 		g.setColor(c);
 

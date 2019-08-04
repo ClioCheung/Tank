@@ -125,6 +125,10 @@ System.out.println("A packet received form server!");
 				msg = new TankDeathMsg(NetClient.this.tc);
 				msg.parse(dis);
 				break;
+			case Msg.MISSILE_DEATH_MSG:
+				msg = new MissileDeathMsg(NetClient.this.tc);
+				msg.parse(dis);
+				break;
 			}
 //			TankClientMsg msg = new TankClientMsg(tc);
 //			在一个内部访问封装类的成员变量：封装类名.this.成员变量名——NetClient.this.tc

@@ -12,24 +12,20 @@ public class Missile {
 	public static final int WIDTH = 10; 
 	public static final int HEIGHT = 10; 
 	
+	public static int ID = 1;
+	
 	private int x;
 	private int y;
-	
+	private int id;
+	private int tankId;
+
 	boolean L=false,U=false,R=false,D=false;
 	Direction dir;
 	
 	TankClient tc;
 	private boolean live = true;
+
 	private boolean good;
-	private int tankId;
-
-	public int getTankId() {
-		return tankId;
-	}
-
-	public void setTankId(int tankId) {
-		this.tankId = tankId;
-	}
 
 	public int getX() {
 		return x;
@@ -46,6 +42,22 @@ public class Missile {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getTankId() {
+		return tankId;
+	}
+
+	public void setTankId(int tankId) {
+		this.tankId = tankId;
+	}
 
 	public boolean isGood() {
 		return good;
@@ -55,20 +67,25 @@ public class Missile {
 		this.good = good;
 	}
 
-
 	public boolean isLive() {
 		return live;
 	}
+	
+	public void setLive(boolean live) {
+		this.live = live;
+	}
 
 
-	public Missile(int tankId,int x, int y,Direction dir) {
+	public Missile(int tankId, int x, int y, Direction dir) {
+		this.tankId = tankId;
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
+		this.id = ID++;
 	}
 	
 	
-	public Missile(int tankId,int x, int y,boolean good,Direction dir,TankClient tc) {
+	public Missile(int tankId, int x, int y, boolean good, Direction dir, TankClient tc) {
 		this(tankId,x,y,dir);
 		this.good = good;
 		this.tc = tc;
@@ -146,6 +163,9 @@ public class Missile {
 			this.live = false;
 			Explode e = new Explode(x,y,this.tc);
 			tc.explodes.add(e);
+/*			
+			MissileDeathMsg msg = new MissileDeathMsg(tankId,id);
+			tc.netClient.send(msg);*/
 			return true;
 		}
 		return false;
