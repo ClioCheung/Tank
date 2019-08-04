@@ -55,6 +55,10 @@ public class Tank {
 		this.y = y;
 	}
 
+	public void setGood(boolean good) {
+		this.good = good;
+	}
+
 	public boolean isGood() {
 		return good;
 	}
@@ -178,7 +182,7 @@ public class Tank {
 			y = TankClient.GAME_HEIGHT - Tank.HEIGHT;
 		}
 
-		if (!good) {
+	/*	if (!good) {
 			Direction[] directions = Direction.values();
 			if (step == 0) {
 				step = random.nextInt(20) + 3;
@@ -190,7 +194,7 @@ public class Tank {
 				this.fire();
 			}
 			step--;
-		}
+		}*/
 
 	}
 

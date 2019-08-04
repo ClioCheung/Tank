@@ -44,6 +44,13 @@ public class NetClient {
 			DataInputStream dis = new DataInputStream(socket.getInputStream());
 			int id = dis.readInt();
 			tc.tank.id = id;
+			
+			if(tc.tank.id%2 == 0) {
+				tc.tank.setGood(false);
+			} else {
+				tc.tank.setGood(true);
+			}
+			
 System.out.println("connected to server! and Server give me a ID: " + id);
 
 		} catch (UnknownHostException e) {
@@ -112,6 +119,10 @@ System.out.println("A packet received form server!");
 				break;
 			case Msg.MISSILE_NEW_MSG:
 				msg = new MissileNewMsg(NetClient.this.tc);
+				msg.parse(dis);
+				break;
+			case Msg.TANK_DEATH_MSG:
+				msg = new TankDeathMsg(NetClient.this.tc);
 				msg.parse(dis);
 				break;
 			}

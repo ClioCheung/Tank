@@ -75,9 +75,12 @@ public class TankClient extends Frame {
 		for (int i = 0; i < missiles.size(); i++) {
 			Missile m = missiles.get(i);
 //			打敌人
-			m.hitTanks(tanks);
+//			m.hitTanks(tanks);
 //			敌人打我
-			m.hitTank(tank);
+			if(m.hitTank(tank)) {
+				TankDeathMsg msg = new TankDeathMsg(tank.id);
+				netClient.send(msg);
+			}
 			m.draw(g);
 		}
 
