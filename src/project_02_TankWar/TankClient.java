@@ -82,7 +82,6 @@ public class TankClient extends Frame {
 				netClient.send(msg);
 				
 				MissileDeathMsg mMsg = new MissileDeathMsg(m.getTankId(),m.getId());
-//				MissileDeathMsg mMsg = new MissileDeathMsg(tank.id,m.getId());
 				netClient.send(mMsg);
 			}
 			m.draw(g);
