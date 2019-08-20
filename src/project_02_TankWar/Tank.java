@@ -39,6 +39,14 @@ public class Tank {
 		this.dir = dir;
 	}
 
+	public Direction getPtDir() {
+		return ptDir;
+	}
+
+	public void setPtDir(Direction ptDir) {
+		this.ptDir = ptDir;
+	}
+
 	public int getX() {
 		return x;
 	}
@@ -280,7 +288,7 @@ public class Tank {
 		}
 		
 		if(dir != oldDir) {
-			TankMoveMsg msg = new TankMoveMsg(id,dir);
+			TankMoveMsg msg = new TankMoveMsg(id,x,y,dir,ptDir);
 			tc.netClient.send(msg);
 		}		
 	}
