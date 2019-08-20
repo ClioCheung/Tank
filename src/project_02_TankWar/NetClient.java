@@ -13,6 +13,8 @@ import java.net.UnknownHostException;
 public class NetClient {
 	private int udpPort;
 	private TankClient tc;
+	//server IP
+	String IP;
 	DatagramSocket ds = null;
 	
 	public int getUdpPort() {
@@ -28,6 +30,7 @@ public class NetClient {
 	}
 	
 	public void connected(String IP,int tcpPort) {
+		this.IP = IP;
 		Socket socket = null;
 		
 		try {
@@ -77,7 +80,7 @@ System.out.println("connected to server! and Server give me a ID: " + id);
 
 
 	public void send(Msg msg) {
-		msg.send(ds,"192.168.88.8",TankServer.UDP_PORT);
+		msg.send(ds,IP,TankServer.UDP_PORT);
 	}
 	
 	private class UDPReceiveThread implements Runnable {
